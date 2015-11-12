@@ -67,7 +67,7 @@ class Panpin:
 
     def get_esaldia(self):
         # esaldi bat jasotzen du esaldien zerrendatik
-        nire_esaldia = self.esaldiak[self.ind]
+        nire_esaldia = self.esaldiak[self.ind].decode('utf8').encode('iso8859-15')
         if self.ind < self.esaldien_luzeera-1:
             self.ind = self.ind+1
         else:
