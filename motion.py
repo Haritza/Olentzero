@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+
 import RPi.GPIO as GPIO
 import time,os,pygame,json,httplib
 import keys
