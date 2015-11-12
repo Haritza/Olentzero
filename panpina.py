@@ -17,6 +17,7 @@ class Panpin:
         #    gpio_pin: panpin honen ahoari dagokion gpio pina adib: 17
 
         self.izena = izena
+        self.parse_api_class = parse_api_class
         self.textu_fitxategia = textu_fitxategia
         self.audio_fitxategia = audio_fitxategia
         self.gpio_pin = gpio_pin
@@ -70,7 +71,7 @@ class Panpin:
 
     def get_esaldia(self):
         # esaldi bat jasotzen du esaldien zerrendatik
-        nire_esaldia = self.esaldiak[self.ind].decode('utf8').encode('iso8859-15')
+        nire_esaldia = self.esaldiak[self.ind]
         if self.ind < self.esaldien_luzeera-1:
             self.ind = self.ind+1
         else:
