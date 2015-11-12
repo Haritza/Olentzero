@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import time,os,pygame,json,httplib
+import time,os,pygame,json,httplib,datetime
 from keys import PARSE_API_KEY,PARSE_APP_ID
 
 class Panpin:
@@ -47,10 +47,11 @@ class Panpin:
         return Panpin.gpio_pinak
 
     def esaldi_berriak(self):
-        # panpin honen esaldiak eguneratzen ditu
+        # panaren esaldiak eguneratzen ditu
         connection = httplib.HTTPSConnection('api.parse.com', 443)
+        params = urllib.urlencode({"where":json.dumps({"noizarte": {"$gt": {"__type": "Date", "iso": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}})
         connection.connect()
-        connection.request('GET', self.parse_api_class, '', {
+        connection.request('GET', self.parse_api_class+'?%s' % params, '', {
                "X-Parse-Application-Id": PARSE_APP_ID,
                "X-Parse-REST-API-Key": PARSE_API_KEY
              })
