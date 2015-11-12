@@ -47,7 +47,7 @@ while True:
             olentzero.idatzi(esaldi_berria["esaldia"])
             maridomingi.idatzi(esaldi_berria["erantzuna"])
 
-		os.system('sh prozesatu.sh')
+	os.system('sh prozesatu.sh')
         print "minutu bat itxaron"
         time.sleep(60)
     else:
