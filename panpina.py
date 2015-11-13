@@ -64,9 +64,10 @@ class Panpin:
         result = json.loads(emaitza.read())
 
         data = result["results"]
-        data = random.shuffle(data)
+        # data = random.shuffle(data)
         self.esaldiak = data
-        self.esaldien_luzeera = data.length
+	print data
+        self.esaldien_luzeera = len(data)
         self.ind = 0
         return data
 
