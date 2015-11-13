@@ -81,7 +81,7 @@ class Panpin:
 
         return nire_esaldia 
 
-    def idatzi(esaldia):
+    def idatzi(self,esaldia):
         # textu fitxategian esaldi bat idazten du
         with open(self.textu_fitxategia, 'w') as outfile:
             json.dump(esaldia, outfile)
