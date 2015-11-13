@@ -17,8 +17,10 @@ maridomingi = Panpin("Maridomingi", keys.MARIDOMINGI_PARSE_PATH, keys.MARIDOMING
 
 esaldi_berria = olentzero.get_esaldia()
 
-olentzero.idatzi(esaldi_berria["esaldia"].decode('utf8').encode('iso8859-15'))
-maridomingi.idatzi(esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15'))
+olentzero_esaldia = esaldi_berria["esaldia"].decode('utf8').encode('iso8859-15')
+maridomingi_esaldia = esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15')
+olentzero.idatzi(olentzero_esaldia)
+maridomingi.idatzi(maridomingi_esaldia)
 
 # textu fitxategietako hitzak audiora bihurtzen ditu Ahotts-ren bitartez
 os.system('sh prozesatu.sh')
@@ -37,8 +39,10 @@ while True:
             olentzerok_hitzegin = False
             
             esaldi_berria = maridomingi.get_esaldia()
-            maridomingi.idatzi(esaldi_berria["esaldia"].decode('utf8').encode('iso8859-15'))
-            olentzero.idatzi(esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15'))
+            maridomingi_esaldia = esaldi_berria["esaldia"].decode('utf8').encode('iso8859-15')
+            olentzero_esaldia = esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15')
+            maridomingi.idatzi(maridomingi_esaldia)
+            olentzero.idatzi(olentzero_esaldia)
         else: 
             # maridomingiri dagokio hitz egitea
             maridomingi.hitzegin()
@@ -47,8 +51,10 @@ while True:
             olentzerok_hitzegin = True
 
             esaldi_berria = olentzero.get_esaldia()
-            olentzero.idatzi(esaldi_berria["esaldia"].decode('utf8').encode('iso8859-15'))
-            maridomingi.idatzi(esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15'))
+            olentzero_esaldia = esaldi_berria["esaldia"].decode('utf8').encode('iso8859-15')
+            maridomingi_esaldia = esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15')
+            olentzero.idatzi(olentzero_esaldia)
+            maridomingi.idatzi(maridomingi_esaldia)
 
 	os.system('sh prozesatu.sh')
         print "minutu bat itxaron"
