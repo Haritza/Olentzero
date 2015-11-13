@@ -2,7 +2,7 @@
 # -*- coding: iso-8859-15 -*-
 
 import RPi.GPIO as GPIO
-import time,os,pygame,json,httplib,datetime,urllib
+import time,os,pygame,json,httplib,datetime,urllib,random
 from keys import PARSE_API_KEY,PARSE_APP_ID
 
 class Panpin:
@@ -64,6 +64,7 @@ class Panpin:
         result = json.loads(emaitza.read())
 
         data = result["results"]
+        data = random.shuffle(data)
         self.esaldiak = data
         self.esaldien_luzeera = data.length
         self.ind = 0
