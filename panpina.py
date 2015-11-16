@@ -3,7 +3,8 @@
 
 import RPi.GPIO as GPIO
 import time,os,pygame,json,httplib,datetime,urllib,random
-from keys import PARSE_API_KEY,PARSE_APP_ID
+from keys import PARSE_API_KEY,PARSE_APP_ID,TXAPA,TXAPAREN_IRAUPENA
+from pydub import AudioSegment
 
 class Panpin:
     # panpin guztien ahoen gpio pinak gordetzen ditu
@@ -66,7 +67,7 @@ class Panpin:
         data = result["results"]
         # data = random.shuffle(data)
         self.esaldiak = data
-	print data
+	    print data
         self.esaldien_luzeera = len(data)
         self.ind = 0
         return data
@@ -79,11 +80,18 @@ class Panpin:
         else:
             self.esaldi_berriak()
 
-        return nire_esaldia 
+        return nire_esaldia
+
+    def moztuEsaldia(self):
+        fitx = AudioSegment.from_wav(self.audio_fitxategia)
+        denbora = len(fitx) - TXAPAREN_IRAUPENA
+        azken_esaldia = fitx[-denbora:]
+        azken_esaldia.export(self.audio_fitxategia,format="wav")
+        return
 
     def idatzi(self,esaldia):
         # textu fitxategian esaldi bat idazten du
-        with open(self.textu_fitxategia, 'w') as outfile:
-            json.dump(esaldia, outfile)
-
+        text_file = open(self.textu_fitxategia, "w")
+        text_file.write(TXAPA + esaldia)
+        text_file.close()
         return
