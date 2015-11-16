@@ -26,7 +26,7 @@ olentzero.moztuEsaldia()
 maridomingi.moztuEsaldia()
 
 while True:
-    current_state = GPIO.input(sensor)
+    current_state = GPIO.input(4)
     if current_state:
         # mugimendu sentsoreak norbait detektatzen badu
         if olentzerok_hitzegin: 
@@ -52,10 +52,10 @@ while True:
             maridomingi.idatzi(esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15'))
 
 	os.system('sh prozesatu.sh')
-    olentzero.moztuEsaldia()
-    maridomingi.moztuEsaldia()
+    	olentzero.moztuEsaldia()
+    	maridomingi.moztuEsaldia()
         print "minutu bat itxaron"
-        time.sleep(60)
+        time.sleep(1)
     else:
         #ez dago inor
         print "ez dago inor"

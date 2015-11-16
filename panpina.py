@@ -67,7 +67,7 @@ class Panpin:
         data = result["results"]
         # data = random.shuffle(data)
         self.esaldiak = data
-	    print data
+	print data
         self.esaldien_luzeera = len(data)
         self.ind = 0
         return data
