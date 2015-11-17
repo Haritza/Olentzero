@@ -22,8 +22,8 @@ maridomingi.idatzi(esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15'
 
 # textu fitxategietako hitzak audiora bihurtzen ditu Ahotts-ren bitartez
 os.system('sh prozesatu.sh')
-olentzero.moztuEsaldia()
-maridomingi.moztuEsaldia()
+olentzero.moztu_esaldia()
+maridomingi.moztu_esaldia()
 
 while True:
     current_state = GPIO.input(4)
@@ -52,8 +52,8 @@ while True:
             maridomingi.idatzi(esaldi_berria["erantzuna"].decode('utf8').encode('iso8859-15'))
 
 	os.system('sh prozesatu.sh')
-    	olentzero.moztuEsaldia()
-    	maridomingi.moztuEsaldia()
+    	olentzero.moztu_esaldia()
+    	maridomingi.moztu_esaldia()
         print "minutu bat itxaron"
         time.sleep(1)
     else:
