@@ -8,7 +8,7 @@ from pydub import AudioSegment
 
 class Panpin:
     # panpin guztien ahoen gpio pinak gordetzen ditu
-    gpio_pinak = []
+    __gpio_pinak = []
     def __init__(self,izena,parse_api_class,textu_fitxategia,audio_fitxategia,gpio_pin):
         
         #    izena: panpinaren izena: Instantziaren izena adib: 'Olentzero'
@@ -24,7 +24,7 @@ class Panpin:
         self.gpio_pin = gpio_pin
         GPIO.setup(gpio_pin, GPIO.OUT)
         GPIO.output(gpio_pin, False)
-        Panpin.gpio_pinak.append(gpio_pin)
+        Panpin.__gpio_pinak.append(gpio_pin)
         self.esaldi_berriak()
 
     def hitzegin(self):
@@ -33,7 +33,7 @@ class Panpin:
         #    irakurri eta dagokion led-a pizten du
         #    hitz egiten duen bitartean
 
-        for pin in Panpin.gpio_pinak:
+        for pin in Panpin.__gpio_pinak:
             GPIO.output(pin, False)
 
         pygame.mixer.init(17000)
@@ -49,7 +49,7 @@ class Panpin:
 
     def pinak(self):
         # panpin guztien pinak itzultzen ditu
-        return Panpin.gpio_pinak
+        return Panpin.__gpio_pinak
 
     def esaldi_berriak(self):
         # panaren esaldiak eguneratzen ditu
@@ -82,7 +82,7 @@ class Panpin:
 
         return nire_esaldia
 
-    def moztuEsaldia(self):
+    def moztu_esaldia(self):
         fitx = AudioSegment.from_wav(self.audio_fitxategia)
         denbora = len(fitx) - TXAPAREN_IRAUPENA
         azken_esaldia = fitx[-denbora:]
