@@ -5,11 +5,12 @@ import RPi.GPIO as GPIO
 import time,os,pygame,json,httplib,datetime,urllib,random,shutil
 from keys import PARSE_API_KEY,PARSE_APP_ID,TXAPA,TXAPAREN_IRAUPENA
 from pydub import AudioSegment
+from begiak import Begiak
 
 class Panpin:
     # panpin guztien ahoen gpio pinak gordetzen ditu
     __gpio_pinak = []
-    def __init__(self,izena,parse_api_class,textu_fitxategia,audio_fitxategia,gpio_pin,karpeta_tenp_izena):
+    def __init__(self,izena,parse_api_class,textu_fitxategia,audio_fitxategia,gpio_pin,karpeta_tenp_izena,begien_pinak):
         
         #    izena: panpinaren izena: Instantziaren izena adib: 'Olentzero'
         #    parse_api_class: Parseko apiaren url-a adib: '/1/classes/Olentzero'
@@ -23,6 +24,7 @@ class Panpin:
         self.audio_fitxategia = audio_fitxategia
         self.karpeta_temp_izena = karpeta_tenp_izena
         self.gpio_pin = gpio_pin
+        self.begiak = Begiak(begien_pinak)
         GPIO.setup(gpio_pin, GPIO.OUT)
         GPIO.output(gpio_pin, False)
         Panpin.__gpio_pinak.append(gpio_pin)
@@ -40,12 +42,14 @@ class Panpin:
         pygame.mixer.init(17000)
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.load(self.audio_fitxategia)
+        self.begiak.mugitu_begiak_hasieran()
         pygame.mixer.music.play()
         GPIO.output(self.gpio_pin, True)
         while pygame.mixer.music.get_busy() == True:
             continue
 
         GPIO.output(self.gpio_pin, False)
+        self.begiak.mugitu_begiak_bukaeran
         return
 
     def pinak(self):
@@ -101,4 +105,5 @@ class Panpin:
         # sintetizadorearen liburutegiak fitxategi tenporalak 
         # gordetzen dituen direktorioaren edukia ezabatzen du
         shutil.rmtree(self.karpeta_temp_izena)
+
         
