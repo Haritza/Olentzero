@@ -25,6 +25,9 @@ os.system('sh prozesatu.sh')
 olentzero.moztu_esaldia()
 maridomingi.moztu_esaldia()
 
+olentzero.ezabatu_karpetaren_edukia()
+maridomingi.ezabatu_karpetaren_edukia()
+
 while True:
     current_state = GPIO.input(4)
     if current_state:
@@ -54,6 +57,9 @@ while True:
 	os.system('sh prozesatu.sh')
     	olentzero.moztu_esaldia()
     	maridomingi.moztu_esaldia()
+
+        olentzero.ezabatu_karpetaren_edukia()
+        maridomingi.ezabatu_karpetaren_edukia()
         print "minutu bat itxaron"
         time.sleep(1)
     else:
