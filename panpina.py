@@ -2,14 +2,14 @@
 # -*- coding: iso-8859-15 -*-
 
 import RPi.GPIO as GPIO
-import time,os,pygame,json,httplib,datetime,urllib,random
+import time,os,pygame,json,httplib,datetime,urllib,random,shutil
 from keys import PARSE_API_KEY,PARSE_APP_ID,TXAPA,TXAPAREN_IRAUPENA
 from pydub import AudioSegment
 
 class Panpin:
     # panpin guztien ahoen gpio pinak gordetzen ditu
     __gpio_pinak = []
-    def __init__(self,izena,parse_api_class,textu_fitxategia,audio_fitxategia,gpio_pin):
+    def __init__(self,izena,parse_api_class,textu_fitxategia,audio_fitxategia,gpio_pin,karpeta_tenp_izena):
         
         #    izena: panpinaren izena: Instantziaren izena adib: 'Olentzero'
         #    parse_api_class: Parseko apiaren url-a adib: '/1/classes/Olentzero'
@@ -21,6 +21,7 @@ class Panpin:
         self.parse_api_class = parse_api_class
         self.textu_fitxategia = textu_fitxategia
         self.audio_fitxategia = audio_fitxategia
+        self.karpeta_temp_izena = karpeta_tenp_izena
         self.gpio_pin = gpio_pin
         GPIO.setup(gpio_pin, GPIO.OUT)
         GPIO.output(gpio_pin, False)
@@ -95,3 +96,9 @@ class Panpin:
         text_file.write(TXAPA + esaldia)
         text_file.close()
         return
+
+    def ezabatu_karpetaren_edukia(self):
+        # sintetizadorearen liburutegiak fitxategi tenporalak 
+        # gordetzen dituen direktorioaren edukia ezabatzen du
+        shutil.rmtree(self.karpeta_temp_izena)
+        
