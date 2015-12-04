@@ -7,7 +7,7 @@ servoMax = 600
 class Begiak:
     def __init__(self,begien_posizioa):
         self.ezkerreko_begia = begien_posizioa[0]
-        self.eskuineko_begia = begien_posizopa[1]
+        self.eskuineko_begia = begien_posizioa[1]
         pwd.setPWM(self.ezkerreko_begia,0,servoMin)
         pwd.setPWM(self.eskuineko_begia,0,servoMax)
 
