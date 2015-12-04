@@ -7,8 +7,8 @@ class Begiak:
     def __init__(self,begien_posizioa):
         self.ezkerreko_begia = begien_posizioa[0]
         self.eskuineko_begia = begien_posizioa[1]
-        pwd.setPWM(self.ezkerreko_begia,0,__servoMin)
-        pwd.setPWM(self.eskuineko_begia,0,__servoMax)
+        __pwd.setPWM(self.ezkerreko_begia,0,__servoMin)
+        __pwd.setPWM(self.eskuineko_begia,0,__servoMax)
 
     def mugitu_begiak_hasieran(self):
         __pwm.setPWM(self.ezkerreko_begia, 0, __servoMax)
