@@ -24,7 +24,12 @@ class Panpin:
         self.audio_fitxategia = audio_fitxategia
         self.karpeta_temp_izena = karpeta_tenp_izena
         self.gpio_pin = gpio_pin
-        self.begiak = Begiak(begien_pinak)
+
+        if begien_pinak:
+            self.begiak = Begiak(begien_pinak)
+        else:
+            self.begiak = False
+
         GPIO.setup(gpio_pin, GPIO.OUT)
         GPIO.output(gpio_pin, False)
         Panpin.__gpio_pinak.append(gpio_pin)
@@ -42,14 +47,16 @@ class Panpin:
         pygame.mixer.init(17000)
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.load(self.audio_fitxategia)
-        self.begiak.mugitu_begiak_hasieran()
+        if self.begiak:
+            self.begiak.mugitu_begiak_hasieran()
         pygame.mixer.music.play()
         GPIO.output(self.gpio_pin, True)
         while pygame.mixer.music.get_busy() == True:
             continue
 
         GPIO.output(self.gpio_pin, False)
-        self.begiak.mugitu_begiak_bukaeran
+        if self.begiak:
+            self.begiak.mugitu_begiak_bukaeran()
         return
 
     def pinak(self):

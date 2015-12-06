@@ -7,11 +7,12 @@ class Begiak:
         self.eskuineko_begia = begien_posizioa[1]
 
         self.pwm = PWM(0x40)
-        self.servoMin = 150
+        self.servoMin = 300
         self.servoMax = 600
+	self.pwm.setPWMFreq(10)
 
         self.pwm.setPWM(self.ezkerreko_begia,0,self.servoMin)
-        self.pwm.setPWM(self.eskuineko_begia,0,self.servoMax)
+        self.pwm.setPWM(self.eskuineko_begia,0,self.servoMin)
 
     def mugitu_begiak_hasieran(self):
         self.pwm.setPWM(self.ezkerreko_begia, 0, self.servoMax)

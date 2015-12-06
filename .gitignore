@@ -1,3 +1,5 @@
 keys.py
+Adafruit_PWM_Servo_Driver.py
+Adafruit_I2C.py
 *.pyc
 *~
