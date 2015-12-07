@@ -10,14 +10,15 @@ from begiak import Begiak
 class Panpin:
     # panpin guztien ahoen gpio pinak gordetzen ditu
     __gpio_pinak = []
-    def __init__(self,izena,parse_api_class,textu_fitxategia,audio_fitxategia,gpio_pin,karpeta_tenp_izena,begien_pinak):
+    def __init__(self,izena,parse_api_class,textu_fitxategia,audio_fitxategia,gpio_pin,karpeta_tenp_izena,begien_pinak,esaldien_jsona):
         
         #    izena: panpinaren izena: Instantziaren izena adib: 'Olentzero'
         #    parse_api_class: Parseko apiaren url-a adib: '/1/classes/Olentzero'
         #    textu_fitxategia: panpin honi dagokion textu fitxagegiaren izena adib: 'olentzero.txt'
         #    audio_fitxategia: panpin honi dagokion audio fitxategiaren izena adib: 'olentzero.wav'
         #    gpio_pin: panpin honen ahoari dagokion gpio pina adib: 17
-
+        self.interneten = False
+        self.esaldien_jsona = esaldien_jsona
         self.izena = izena
         self.parse_api_class = parse_api_class
         self.textu_fitxategia = textu_fitxategia
@@ -33,10 +34,20 @@ class Panpin:
         GPIO.setup(gpio_pin, GPIO.OUT)
         GPIO.output(gpio_pin, False)
         Panpin.__gpio_pinak.append(gpio_pin)
-        self.esaldi_berriak()
+
+        # Esaldiak hartu json lokal batetik
+        with open(self.esaldien_jsona) as json_file:
+            json_data = json.load(json_file)
+
+        obj = json.loads(json_data)
+
+        random.shuffle(obj)
+        self.esaldiak = obj
+        self.esaldien_luzeera = len(obj)
+        self.ind = 0
+        #self.esaldi_berriak()
 
     def hitzegin(self):
-
         #    panpinak bere audio fitxategia
         #    irakurri eta dagokion led-a pizten du
         #    hitz egiten duen bitartean
@@ -65,21 +76,26 @@ class Panpin:
 
     def esaldi_berriak(self):
         # panaren esaldiak eguneratzen ditu
-        connection = httplib.HTTPSConnection('api.parse.com', 443)
-        params = urllib.urlencode({"where":json.dumps({"noizarte": {"$gt": {"__type": "Date", "iso": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}},{"noiztik": {"$lt": {"__type": "Date", "iso": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}})})
-        connection.connect()
-        connection.request('GET', self.parse_api_class+'?%s' % params, '', {
-               "X-Parse-Application-Id": PARSE_APP_ID,
-               "X-Parse-REST-API-Key": PARSE_API_KEY
-             })
-        emaitza = connection.getresponse()
-        print emaitza.status # 200 ondo bestela ez
-        result = json.loads(emaitza.read())
+        try:
+            connection = httplib.HTTPSConnection('api.parse.com', 443)
+            params = urllib.urlencode({"where":json.dumps({"noizarte": {"$gt": {"__type": "Date", "iso": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}},{"noiztik": {"$lt": {"__type": "Date", "iso": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}})})
+            connection.connect()
+            connection.request('GET', self.parse_api_class+'?%s' % params, '', {
+                   "X-Parse-Application-Id": PARSE_APP_ID,
+                   "X-Parse-REST-API-Key": PARSE_API_KEY
+                 })
+            emaitza = connection.getresponse()
 
-        data = result["results"]
+            if emaitza.status == 200:
+                result = json.loads(emaitza.read())
+                data = result["results"]
+            else:
+                data = self.esaldiak
+        except:
+            data = self.esaldiak
+        
         # data = random.shuffle(data)
         self.esaldiak = data
-	print data
         self.esaldien_luzeera = len(data)
         self.ind = 0
         return data
@@ -90,11 +106,17 @@ class Panpin:
         if self.ind < self.esaldien_luzeera-1:
             self.ind = self.ind+1
         else:
-            self.esaldi_berriak()
+            if self.interneten:
+                self.esaldi_berriak()
+            else:
+                random.shuffle(self.esaldiak)
+                self.ind = 0
 
         return nire_esaldia
 
     def moztu_esaldia(self):
+        # textu prozesadoreak arazoak sortzen ditu esaldi laburrekin.
+        # funtzio honek interesatzen zaigun zatia hartzen du
         fitx = AudioSegment.from_wav(self.audio_fitxategia)
         denbora = len(fitx) - TXAPAREN_IRAUPENA
         azken_esaldia = fitx[-denbora:]
@@ -112,5 +134,3 @@ class Panpin:
         # sintetizadorearen liburutegiak fitxategi tenporalak 
         # gordetzen dituen direktorioaren edukia ezabatzen du
         shutil.rmtree(self.karpeta_temp_izena)
-
-        
